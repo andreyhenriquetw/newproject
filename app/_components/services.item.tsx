@@ -30,26 +30,16 @@ interface ServiceItemProps {
   barbershop: Pick<Barbershop, "name">
 }
 
-// Função de configuração de horários por dia da semana
 const getOpeningHours = (date: Date) => {
   const day = date.getDay() // 0 = Domingo, 1 = Segunda ...
 
-  // Segunda a Quinta → 16h às 21h
-  if (day >= 1 && day <= 4) {
-    return { open: 16, close: 21 }
+  //  Domingo não funciona
+  if (day === 0) {
+    return null
   }
 
-  // Sexta-feira → 14h às 21h
-  if (day === 5) {
-    return { open: 14, close: 21 }
-  }
-
-  // Sábado e Domingo → 08h às 22h
-  if (day === 6 || day === 0) {
-    return { open: 8, close: 22 }
-  }
-
-  return null
+  // ✅ Segunda a Sábado → 09h às 19h
+  return { open: 9, close: 19 }
 }
 
 interface GetTimeListProps {
@@ -79,14 +69,25 @@ const getTimeList = ({ bookings, selectedDay }: GetTimeListProps) => {
 
   const times: string[] = []
 
+  // Horários cheios (09:00 até 18:00)
   for (let hour = config.open; hour < config.close; hour++) {
     times.push(`${String(hour).padStart(2, "0")}:00`)
+  }
+
+  // ✅ Último horário especial
+  if (config.close === 19) {
+    times.push("18:30")
   }
 
   return times.filter((time) => {
     const [hourStr, minStr] = time.split(":")
     const hour = Number(hourStr)
     const minutes = Number(minStr)
+
+    // ❌ remove horário de almoço (12:00 e 13:00)
+    if ((hour === 12 || hour === 13) && minutes === 0) {
+      return false
+    }
 
     const irelandNow = getIrelandNow()
     const selectedDayInIreland = toIrelandDate(selectedDay)
@@ -102,8 +103,10 @@ const getTimeList = ({ bookings, selectedDay }: GetTimeListProps) => {
       format(irelandNow, "yyyy-MM-dd") ===
       format(selectedDayInIreland, "yyyy-MM-dd")
 
+    // ❌ não mostrar horários no passado
     if (isSameDayInIreland && isPast(timeInIreland)) return false
 
+    // ❌ não mostrar horários já reservados
     const hasBookingOnCurrentTime = bookings.some((booking) => {
       const bookingIrelandDate = toIrelandDate(booking.date)
 
@@ -198,7 +201,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
 📅 - Data: ${formattedDate} às ${formattedTime}
 💵 - Preço: ${formattedPrice}`
 
-      const phoneNumber = "353874772097"
+      const phoneNumber = "5593999034526"
       const encodedMessage = encodeURIComponent(message)
       const link = `https://wa.me/${phoneNumber}?text=${encodedMessage}`
 
@@ -247,10 +250,11 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
             <p className="text-sm text-gray-400">{service.description}</p>
             <div className="mt-auto flex items-center justify-between">
               <p className="text-sm font-bold text-primary">
-                {"€ " +
-                  Intl.NumberFormat("en-IE", {
-                    minimumFractionDigits: 2,
-                  }).format(Number(service.price))}
+                {Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                  minimumFractionDigits: 2,
+                }).format(Number(service.price))}
               </p>
 
               <Sheet

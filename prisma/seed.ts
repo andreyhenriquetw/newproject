@@ -7,14 +7,14 @@ async function seedDatabase() {
     const images = [
       "https://cultura.uol.com.br/webstories/2023/05/como-garantir-uma-barba-bem-feita/assets/5.jpeg",
     ]
-    const creativeNames = ["KN DO CORTE"]
-    const addresses = ["54 Drumnavanagh, Cavan, H12 X443, Irlanda"]
+    const creativeNames = ["LUDIMILA BARBER"]
+    const addresses = ["Santarém - PA, rua tal nº123"]
 
     const services = [
       {
         name: "Corte de Cabelo",
         description: "Estilo personalizado com as últimas tendências.",
-        price: 15.0,
+        price: 25.0,
         imageUrl:
           "https://hotclube.s3.sa-east-1.amazonaws.com/cortedecabelo.jpeg",
       },
@@ -27,7 +27,7 @@ async function seedDatabase() {
       {
         name: "Sobrancelha",
         description: "Expressão acentuada com modelagem precisa.",
-        price: 3.0,
+        price: 5.0,
         imageUrl:
           "https://hotclube.s3.sa-east-1.amazonaws.com/sombrancelhaa.jpeg",
       },
@@ -90,7 +90,7 @@ async function seedDatabase() {
         name: creativeNames[0],
         address: addresses[0],
         imageUrl: images[0],
-        phones: ["+352 874 772 097"],
+        phones: ["(93) 99999-9999"],
         description:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac augue ullamcorper, pharetra orci mollis, auctor tellus. Phasellus pharetra erat ac libero efficitur tempus. Donec pretium convallis iaculis. Etiam eu felis sollicitudin, cursus mi vitae, iaculis magna. Nam non erat neque. In hac habitasse platea dictumst. Pellentesque molestie accumsan tellus id laoreet.",
       },

@@ -10,16 +10,16 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "KN DO CORTE",
   description: "Clique aqui para agendar, é rapido e fácil!",
-  icons: "/logkn.png",
+  icons: "/logludd.png",
   openGraph: {
     title: "AGENDE SEU HORÁRIO!",
     description: "Clique aqui para agendar, é rapido e fácil!",
-    url: "https://kndocorte.shop", // coloque seu domínio aqui
+    url: "https://ludimilabarber.shop", // coloque seu domínio aqui
     siteName: "KN DO CORTE",
     type: "website",
     images: [
       {
-        url: "/logoknlink.jpg", // imagem que aparecerá no WhatsApp
+        url: "/loglud.png", // imagem que aparecerá no WhatsApp
         width: 1200,
         height: 630,
       },
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "KN DO CORTE",
     description: "Clique aqui para agendar, é rapido e fácil!",
-    images: ["/logoknlink.jpg"],
+    images: ["/loglud.png"],
   },
 }
 

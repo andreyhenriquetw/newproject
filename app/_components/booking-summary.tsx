@@ -16,10 +16,9 @@ const BookingSummary = ({ service, selectedDate }: BookingSummaryProps) => {
         <div className="flex items-center justify-between">
           <h2 className="font-bold">{service.name}</h2>
           <p className="text-sm font-bold">
-            €{" "}
             {Intl.NumberFormat("pt-BR", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
+              style: "currency",
+              currency: "BRL",
             }).format(Number(service.price))}
           </p>
         </div>
