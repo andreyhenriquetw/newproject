@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/loglud.png", // imagem que aparecerá no WhatsApp
+        url: "/logoludlink.png", // imagem que aparecerá no WhatsApp
         width: 1200,
         height: 630,
       },
