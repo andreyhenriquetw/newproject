@@ -71,7 +71,7 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
         <div className="-mt-1 mb-3 flex items-center gap-2">
           <div className="relative size-[35px] shrink-0 overflow-hidden rounded-full">
             <Image
-              src="/ofckn.png"
+              src="/loglud.png"
               alt={barbershop.name}
               fill
               className="object-cover object-[50%_30%]"
