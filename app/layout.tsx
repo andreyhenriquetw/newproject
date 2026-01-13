@@ -8,13 +8,13 @@ import AuthProvider from "./_providers/auth"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "KN DO CORTE",
+  title: "LUDMILA BARBER",
   description: "Clique aqui para agendar, é rapido e fácil!",
   icons: "/logludd.png",
   openGraph: {
     title: "AGENDE SEU HORÁRIO!",
     description: "Clique aqui para agendar, é rapido e fácil!",
-    url: "https://ludimila-pearl.vercel.app", // coloque seu domínio aqui
+    url: "https://ludimila-kappa.vercel.app", // coloque seu domínio aqui
     siteName: "LUDIMILA BARBER",
     type: "website",
     images: [
