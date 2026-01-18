@@ -178,7 +178,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
 📅 - Data: ${formattedDate} às ${formattedTime}
 💵 - Preço: ${formattedPrice}`
 
-      const phoneNumber = "5593999034526"
+      const phoneNumber = "5519981502700"
       const encodedMessage = encodeURIComponent(message)
       const link = `https://wa.me/${phoneNumber}?text=${encodedMessage}`
 

@@ -14,8 +14,8 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AGENDE SEU HORÁRIO!",
     description: "Clique aqui para agendar, é rapido e fácil!",
-    url: "https://ludimila-kappa.vercel.app", // coloque seu domínio aqui
-    siteName: "KN DO CO",
+    url: "https://agendar-alpha.vercel.app", // coloque seu domínio aqui
+    siteName: "KN DO CORTE",
     type: "website",
     images: [
       {
