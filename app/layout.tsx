@@ -8,18 +8,18 @@ import AuthProvider from "./_providers/auth"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "KN DOCORTE",
+  title: "DON NAVALHON",
   description: "Clique aqui para agendar, é rapido e fácil!",
-  icons: "/logkn.png",
+  icons: "/dontrans.png",
   openGraph: {
     title: "AGENDE SEU HORÁRIO!",
     description: "Clique aqui para agendar, é rapido e fácil!",
     url: "https://agendar-alpha.vercel.app", // coloque seu domínio aqui
-    siteName: "KN DO CORTE",
+    siteName: "DON NAVALHON",
     type: "website",
     images: [
       {
-        url: "/logoknlink.png", // imagem que aparecerá no WhatsApp
+        url: "/logpreto.png", // imagem que aparecerá no WhatsApp
         width: 1200,
         height: 630,
       },
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "KN DOCORTE",
+    title: "DON NAVALHON",
     description: "Clique aqui para agendar, é rapido e fácil!",
-    images: ["/logoknlink.png"],
+    images: ["/logpreto.png"],
   },
 }
 

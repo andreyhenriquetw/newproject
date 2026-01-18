@@ -71,7 +71,7 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
         <div className="-mt-1 mb-3 flex items-center gap-2">
           <div className="relative size-[35px] shrink-0 overflow-hidden rounded-full">
             <Image
-              src="/ofckn.png"
+              src="/logpreto.png"
               alt={barbershop.name}
               fill
               className="object-cover object-[50%_30%]"
@@ -81,12 +81,12 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
           <h1 className="text-xl font-semibold">{barbershop.name}</h1>
         </div>
         <div className="mb-2 flex items-center gap-2">
-          <MapPinIcon className="text-primary" size={18} />
+          <MapPinIcon className="text-red-500" size={18} />
           <p className="text-sm">{barbershop?.address}</p>
         </div>
 
         <div className="flex items-center gap-2">
-          <StarIcon className="fill-primary text-primary" size={18} />
+          <StarIcon className="fill-yellow-400 text-yellow-400" size={18} />
           <p className="text-sm">5,0 (99 avaliações)</p>
         </div>
       </div>

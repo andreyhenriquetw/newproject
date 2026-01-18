@@ -28,7 +28,7 @@ const BarbershopItem = ({ barbershop }: BarberShopItemProps) => {
             className="absolute left-2 top-2 space-x-1"
             variant="secondary"
           >
-            <StarIcon size={12} className="fill-primary text-primary" />
+            <StarIcon size={12} className="fill-yellow-400 text-yellow-400" />
             <p className="text-xs font-semibold">5,0</p>
           </Badge>
         </div>
@@ -39,7 +39,7 @@ const BarbershopItem = ({ barbershop }: BarberShopItemProps) => {
             <div className="flex items-center gap-2">
               <div className="relative size-[30px] shrink-0 overflow-hidden rounded-full">
                 <Image
-                  src="/ofckn.png"
+                  src="/logpreto.png"
                   alt="Logo da Barbearia"
                   fill
                   className="object-cover object-[50%_25%]"
