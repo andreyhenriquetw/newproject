@@ -39,7 +39,7 @@ const BarbershopItem = ({ barbershop }: BarberShopItemProps) => {
             <div className="flex items-center gap-2">
               <div className="relative size-[30px] shrink-0 overflow-hidden rounded-full">
                 <Image
-                  src="/loglud.png"
+                  src="/ofckn.png"
                   alt="Logo da Barbearia"
                   fill
                   className="object-cover object-[50%_25%]"

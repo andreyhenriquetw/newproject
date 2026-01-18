@@ -8,18 +8,18 @@ import AuthProvider from "./_providers/auth"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "LUDMILA BARBER",
+  title: "KN DOCORTE",
   description: "Clique aqui para agendar, é rapido e fácil!",
-  icons: "/logludd.png",
+  icons: "/logkn.png",
   openGraph: {
     title: "AGENDE SEU HORÁRIO!",
     description: "Clique aqui para agendar, é rapido e fácil!",
     url: "https://ludimila-kappa.vercel.app", // coloque seu domínio aqui
-    siteName: "LUDIMILA BARBER",
+    siteName: "KN DO CO",
     type: "website",
     images: [
       {
-        url: "/logoludlinki.png", // imagem que aparecerá no WhatsApp
+        url: "/logoknlink.png", // imagem que aparecerá no WhatsApp
         width: 1200,
         height: 630,
       },
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "LUDIMILA BARBER",
+    title: "KN DOCORTE",
     description: "Clique aqui para agendar, é rapido e fácil!",
-    images: ["/loglud.png"],
+    images: ["/logoknlink.png"],
   },
 }
 
