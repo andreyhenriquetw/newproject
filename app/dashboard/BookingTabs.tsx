@@ -5,6 +5,7 @@ import { formatTime } from "@/app/_lib/utils"
 import { Button } from "../_components/ui/button"
 
 import { Prisma } from "@prisma/client"
+import { formatDate } from "date-fns"
 
 type Booking = {
   id: string
@@ -115,6 +116,9 @@ export default function BookingTabs({
           <div className="text-right">
             <p className="font-semibold">R$ {Number(booking.service.price)}</p>
             <p className="text-xs text-gray-500">{formatTime(booking.date)}</p>
+            <p className="text-xs text-gray-500">
+              {formatDate(booking.date, "dd/MM/yyyy")}
+            </p>
           </div>
         </div>
       ))}

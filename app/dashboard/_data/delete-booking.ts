@@ -10,6 +10,8 @@ export async function deleteBooking(bookingId: string) {
     },
   })
 
-  // Atualiza o dashboard após deletar
+  // 🔄 Revalida TODAS as telas que usam agendamentos
+  revalidatePath("/")
+  revalidatePath("/bookings")
   revalidatePath("/dashboard")
 }

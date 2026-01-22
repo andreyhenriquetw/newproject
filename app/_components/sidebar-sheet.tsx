@@ -102,7 +102,7 @@ const SidebarSheet = () => {
             </Button>
           </DialogTrigger>
 
-          <DialogContent className="w-[90%] max-w-sm">
+          <DialogContent className="top-[30%] w-[90%] max-w-sm translate-y-0">
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <LockIcon size={18} />
