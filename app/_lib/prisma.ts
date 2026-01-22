@@ -1,18 +1,19 @@
 import { PrismaClient } from "@prisma/client"
 
 declare global {
-  // eslint-disable-next-line no-unused-vars, no-var
-  var cachedPrisma: PrismaClient
+  // eslint-disable-next-line no-var
+  var prisma: PrismaClient | undefined
 }
 
-let prisma: PrismaClient
-if (process.env.NODE_ENV === "production") {
-  prisma = new PrismaClient()
-} else {
-  if (!global.cachedPrisma) {
-    global.cachedPrisma = new PrismaClient()
-  }
-  prisma = global.cachedPrisma
+export const prisma =
+  global.prisma ??
+  new PrismaClient({
+    log: ["error"],
+  })
+
+if (process.env.NODE_ENV !== "production") {
+  global.prisma = prisma
 }
 
+// 🔹 Alias para código antigo
 export const db = prisma

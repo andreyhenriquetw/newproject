@@ -1,7 +1,17 @@
 "use client"
 
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+
 import { Button } from "./ui/button"
-import { CalendarIcon, HomeIcon, LogInIcon, LogOutIcon } from "lucide-react"
+import {
+  CalendarIcon,
+  HomeIcon,
+  LogInIcon,
+  LogOutIcon,
+  LayoutDashboardIcon,
+  LockIcon,
+} from "lucide-react"
 import { SheetClose, SheetContent, SheetHeader, SheetTitle } from "./ui/sheet"
 import { quickSearchOptions } from "../_constants/search"
 import Link from "next/link"
@@ -14,6 +24,21 @@ import SignInDialog from "./sign-in-dialog"
 const SidebarSheet = () => {
   const { data } = useSession()
   const handleLogoutClick = () => signOut()
+
+  const [openAdmin, setOpenAdmin] = useState(false)
+  const [adminPassword, setAdminPassword] = useState("")
+  const router = useRouter()
+
+  function handleAdminAccess() {
+    if (adminPassword === "kn") {
+      document.cookie = "admin-auth=true; path=/"
+      setAdminPassword("")
+      setOpenAdmin(false)
+      router.push("/dashboard")
+    } else {
+      alert("Senha incorreta")
+    }
+  }
 
   return (
     <SheetContent className="overflow-y-auto">
@@ -50,6 +75,7 @@ const SidebarSheet = () => {
         )}
       </div>
 
+      {/* INÍCIO / AGENDAMENTOS / DASHBOARD */}
       <div className="flex flex-col gap-2 border-b border-solid py-5">
         <SheetClose asChild>
           <Button className="justify-start gap-2" variant="ghost" asChild>
@@ -59,14 +85,47 @@ const SidebarSheet = () => {
             </Link>
           </Button>
         </SheetClose>
+
         <Button className="justify-start gap-2" variant="ghost" asChild>
           <Link href="/bookings">
             <CalendarIcon size={18} />
             Agendamentos
           </Link>
         </Button>
+
+        {/* DASHBOARD COM SENHA */}
+        <Dialog open={openAdmin} onOpenChange={setOpenAdmin}>
+          <DialogTrigger asChild>
+            <Button className="justify-start gap-2" variant="ghost">
+              <LayoutDashboardIcon size={18} />
+              Dashboard
+            </Button>
+          </DialogTrigger>
+
+          <DialogContent className="w-[90%] max-w-sm">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <LockIcon size={18} />
+                <h2 className="font-bold">Acesso restrito</h2>
+              </div>
+
+              <input
+                type="password"
+                placeholder="Digite a senha"
+                className="w-full rounded-md border px-3 py-2 text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black"
+                value={adminPassword}
+                onChange={(e) => setAdminPassword(e.target.value)}
+              />
+
+              <Button className="w-full" onClick={handleAdminAccess}>
+                Entrar
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
 
+      {/* SERVIÇOS */}
       <div className="flex flex-col gap-2 border-b border-solid py-5">
         {quickSearchOptions.map((option) => (
           <SheetClose key={option.title} asChild>
