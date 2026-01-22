@@ -4,11 +4,16 @@ import { useState } from "react"
 import { formatTime } from "@/app/_lib/utils"
 import { Button } from "../_components/ui/button"
 
+import { Prisma } from "@prisma/client"
+
 type Booking = {
   id: string
   date: Date
   user: { name: string | null }
-  service: { name: string; price: any }
+  service: {
+    name: string
+    price: Prisma.Decimal
+  }
 }
 
 export default function BookingTabs({
