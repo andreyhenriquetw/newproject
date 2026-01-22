@@ -1,27 +1,28 @@
-import BookingTabs from "./BookingTabs"
+"use client"
 
-import { getTodayBookings } from "./_data/get-today-bookings"
-import { getUpcomingBookings } from "./_data/get-upcoming-bookings"
-import { getRecentBookings } from "./_data/get-recent-bookings"
-import { getMonthlyReport } from "./_data/get-monthly-report"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import dynamic from "next/dynamic"
 
-export default async function DashboardPage() {
-  const today = await getTodayBookings()
-  const upcoming = await getUpcomingBookings()
-  const recent = await getRecentBookings()
-  const monthlyReport = await getMonthlyReport()
+const DashboardServer = dynamic(() => import("./DashboardServer"), {
+  ssr: false,
+})
 
-  return (
-    <div className="space-y-6 p-4">
-      <h1 className="text-xl font-bold">Dashboard da Barbearia</h1>
+export default function DashboardPage() {
+  const router = useRouter()
+  const [authorized, setAuthorized] = useState(false)
 
-      <BookingTabs
-        today={today}
-        upcoming={upcoming}
-        recent={recent}
-        totalRevenue={monthlyReport.totalRevenue}
-        totalBookings={monthlyReport.totalBookings}
-      />
-    </div>
-  )
+  useEffect(() => {
+    const isAuthorized = localStorage.getItem("dashboard_auth")
+
+    if (isAuthorized === "true") {
+      setAuthorized(true)
+    } else {
+      router.replace("/")
+    }
+  }, [router])
+
+  if (!authorized) return null
+
+  return <DashboardServer />
 }
