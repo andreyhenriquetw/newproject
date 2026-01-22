@@ -178,12 +178,14 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
 📅 - Data: ${formattedDate} às ${formattedTime}
 💵 - Preço: ${formattedPrice}`
 
-      const phoneNumber = "5519981502700"
+      const phoneNumber = "5593999034526"
       const encodedMessage = encodeURIComponent(message)
-      const link = `https://wa.me/${phoneNumber}?text=${encodedMessage}`
 
-      // abre o WhatsApp direto
-      window.open(link, "_blank")
+      // deep link direto pro app
+      const deepLink = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`
+
+      // abre uma única vez
+      window.location.href = deepLink
 
       handleBookingSheetOpenChange()
 
@@ -325,7 +327,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                       disabled={!selectedDay || !selectedTime}
                       className="bg-green-500 text-white hover:bg-green-600"
                     >
-                      Confirmar no WhatsApp
+                      CONFIRMAR NO WHATSAPP
                     </Button>
                   </SheetFooter>
                 </SheetContent>
