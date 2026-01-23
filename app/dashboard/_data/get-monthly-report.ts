@@ -1,5 +1,4 @@
-// app/dashboard/_data/get-monthly-report.ts
-
+export const dynamic = "force-dynamic"
 import { prisma } from "@/app/_lib/prisma"
 
 export async function getMonthlyReport() {

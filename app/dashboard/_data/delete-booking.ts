@@ -1,5 +1,5 @@
 "use server"
-
+export const dynamic = "force-dynamic"
 import { prisma } from "@/app/_lib/prisma"
 import { revalidatePath } from "next/cache"
 
