@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
-
+export const dynamic = "force-dynamic"
 /**
  * Função padrão do shadcn/ui
  */

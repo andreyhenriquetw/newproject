@@ -8,6 +8,8 @@ import Link from "next/link"
 import { Button } from "../_components/ui/button"
 import { ChevronLeftIcon } from "lucide-react"
 
+export const dynamic = "force-dynamic"
+
 export default async function DashboardPage() {
   const today = await getTodayBookings()
   const upcoming = await getUpcomingBookings()

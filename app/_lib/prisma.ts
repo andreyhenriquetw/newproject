@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-
+export const dynamic = "force-dynamic"
 declare global {
   // eslint-disable-next-line no-var
   var prisma: PrismaClient | undefined

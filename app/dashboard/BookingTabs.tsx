@@ -1,11 +1,8 @@
 "use client"
 
 import { useState } from "react"
-
 import { Button } from "../_components/ui/button"
-
 import { Prisma } from "@prisma/client"
-
 import {
   clearMonthBookings,
   clearTodayBookings,
@@ -13,6 +10,8 @@ import {
 } from "./_actions/clear-bookings"
 import { deleteBooking } from "../_actions/delete-booking"
 import { formatDate } from "../_lib/utils"
+
+export const dynamic = "force-dynamic"
 
 const formatTime = (date: Date) => {
   return new Date(date).toLocaleTimeString("pt-BR", {
