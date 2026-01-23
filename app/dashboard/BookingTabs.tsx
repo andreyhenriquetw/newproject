@@ -7,6 +7,13 @@ import { Button } from "../_components/ui/button"
 import { Prisma } from "@prisma/client"
 import { formatDate } from "date-fns"
 
+import {
+  clearMonthBookings,
+  clearTodayBookings,
+  clearUpcomingBookings,
+} from "./_actions/clear-bookings"
+import { deleteBooking } from "../_actions/delete-booking"
+
 type Booking = {
   id: string
   date: Date
@@ -34,12 +41,14 @@ export default function BookingTabs({
     "today",
   )
 
+  const [openCancelActions, setOpenCancelActions] = useState(false)
+
   const data =
     activeTab === "today" ? today : activeTab === "upcoming" ? upcoming : recent
 
   return (
     <div className="space-y-6">
-      {/* 🔥 CARD DE FATURAMENTO */}
+      {/*  CARD DE FATURAMENTO */}
       <div className="rounded-2xl bg-black p-6 text-white shadow-lg">
         <p className="text-sm opacity-80">Faturamento do mês</p>
 
@@ -113,15 +122,85 @@ export default function BookingTabs({
             <p className="text-gray-500">{booking.service.name}</p>
           </div>
 
-          <div className="text-right">
-            <p className="font-semibold">R$ {Number(booking.service.price)}</p>
-            <p className="text-xs text-gray-500">{formatTime(booking.date)}</p>
-            <p className="text-xs text-gray-500">
-              {formatDate(booking.date, "dd/MM/yyyy")}
-            </p>
+          <div className="flex items-center gap-3">
+            <div className="text-right">
+              <p className="font-semibold">
+                R$ {Number(booking.service.price)}
+              </p>
+              <p className="text-xs text-gray-500">
+                {formatTime(booking.date)}
+              </p>
+            </div>
+
+            {/* ❌ CANCELAR INDIVIDUAL */}
+            <Button
+              size="icon"
+              variant="ghost"
+              className="text-red-500 hover:bg-red-500/10"
+              onClick={async () => {
+                const ok = confirm(
+                  `Cancelar o agendamento de ${booking.user.name ?? "Cliente"}?`,
+                )
+                if (!ok) return
+
+                await deleteBooking(booking.id)
+              }}
+            >
+              ❌
+            </Button>
           </div>
         </div>
       ))}
+
+      <div className="mt-6 rounded-lg border border-red-500/30 p-4">
+        <Button
+          variant="destructive"
+          className="w-full"
+          onClick={() => setOpenCancelActions(!openCancelActions)}
+        >
+          Cancelar agendamentos
+        </Button>
+
+        {openCancelActions && (
+          <div className="mt-4 space-y-2">
+            <Button
+              variant="outline"
+              className="w-full border-red-500 text-red-500"
+              onClick={async () => {
+                if (confirm("Cancelar agendamentos de HOJE?")) {
+                  await clearTodayBookings()
+                }
+              }}
+            >
+              Cancelar agendamentos de hoje
+            </Button>
+
+            <Button
+              variant="outline"
+              className="w-full border-red-500 text-red-500"
+              onClick={async () => {
+                if (confirm("Cancelar agendamentos FUTUROS?")) {
+                  await clearUpcomingBookings()
+                }
+              }}
+            >
+              Cancelar agendamentos próximos
+            </Button>
+
+            <Button
+              variant="outline"
+              className="w-full border-red-500 text-red-500"
+              onClick={async () => {
+                if (confirm("Cancelar TODOS os agendamentos do MÊS?")) {
+                  await clearMonthBookings()
+                }
+              }}
+            >
+              Cancelar agendamentos do mês
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
