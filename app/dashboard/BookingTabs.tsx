@@ -1,11 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import { formatTime } from "@/app/_lib/utils"
+
 import { Button } from "../_components/ui/button"
 
 import { Prisma } from "@prisma/client"
-import { formatDate } from "date-fns"
 
 import {
   clearMonthBookings,
@@ -13,6 +12,14 @@ import {
   clearUpcomingBookings,
 } from "./_actions/clear-bookings"
 import { deleteBooking } from "../_actions/delete-booking"
+import { formatDate } from "../_lib/utils"
+
+const formatTime = (date: Date) => {
+  return new Date(date).toLocaleTimeString("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  })
+}
 
 type Booking = {
   id: string
@@ -128,7 +135,7 @@ export default function BookingTabs({
                 R$ {Number(booking.service.price)}
               </p>
               <p className="text-xs text-gray-500">
-                {formatTime(booking.date)}
+                {formatDate(booking.date)} • {formatTime(booking.date)}
               </p>
             </div>
 
