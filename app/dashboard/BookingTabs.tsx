@@ -3,11 +3,6 @@
 import { useState } from "react"
 import { Button } from "../_components/ui/button"
 import { Prisma } from "@prisma/client"
-import {
-  clearMonthBookings,
-  clearTodayBookings,
-  clearUpcomingBookings,
-} from "./_actions/clear-bookings"
 import { deleteBooking } from "../_actions/delete-booking"
 import { formatDate } from "../_lib/utils"
 
@@ -47,14 +42,14 @@ export default function BookingTabs({
     "today",
   )
 
-  const [openCancelActions, setOpenCancelActions] = useState(false)
-
   const data =
     activeTab === "today" ? today : activeTab === "upcoming" ? upcoming : recent
 
+  const isMonth = activeTab === "recent"
+
   return (
     <div className="space-y-6">
-      {/*  CARD DE FATURAMENTO */}
+      {/* CARD DE FATURAMENTO */}
       <div className="rounded-2xl bg-black p-6 text-white shadow-lg">
         <p className="text-sm opacity-80">Faturamento do mês</p>
 
@@ -63,150 +58,142 @@ export default function BookingTabs({
         </p>
 
         <p className="mt-1 text-sm opacity-80">
-          {totalBookings} agendamentos no mês
+          {totalBookings} agendamentos total
         </p>
       </div>
 
-      {/* 🔘 BOTÕES */}
+      {/* BOTÕES */}
       <div className="flex gap-2">
-        <Button
+        <TabButton
+          label="Hoje"
+          active={activeTab === "today"}
+          count={today.length}
           onClick={() => setActiveTab("today")}
-          className={`relative w-full rounded-lg px-3 py-2 text-sm transition ${
-            activeTab === "today"
-              ? "bg-black text-white"
-              : "border border-zinc-700 bg-zinc-800 text-zinc-300"
-          }`}
-        >
-          Hoje
-          {today.length > 0 && (
-            <span className="absolute -right-2 -top-2 flex h-[20px] min-w-[20px] items-center justify-center rounded-full bg-green-500 px-1 text-xs font-bold text-white">
-              {today.length}
-            </span>
-          )}
-        </Button>
+        />
 
-        <Button
+        <TabButton
+          label="Próximos"
+          active={activeTab === "upcoming"}
+          count={upcoming.length}
           onClick={() => setActiveTab("upcoming")}
-          className={`relative w-full rounded-lg px-3 py-2 text-sm transition ${
-            activeTab === "upcoming"
-              ? "bg-black text-white"
-              : "border border-zinc-700 bg-zinc-800 text-zinc-300"
-          }`}
-        >
-          Próximos
-          {upcoming.length > 0 && (
-            <span className="absolute -right-2 -top-2 flex h-[20px] min-w-[20px] items-center justify-center rounded-full bg-green-500 px-1 text-xs font-bold text-white">
-              {upcoming.length}
-            </span>
-          )}
-        </Button>
+        />
 
-        <Button
+        <TabButton
+          label="Finalizados"
+          active={activeTab === "recent"}
+          count={recent.length}
+          variant="finished"
           onClick={() => setActiveTab("recent")}
-          className={`w-full rounded-lg px-3 py-2 text-sm transition ${
-            activeTab === "recent"
-              ? "bg-black text-white"
-              : "border border-zinc-700 bg-zinc-800 text-zinc-300"
-          }`}
-        >
-          MÊS ({recent.length})
-        </Button>
+        />
       </div>
 
-      {/* 📋 LISTA */}
+      {/* LISTA */}
       {data.length === 0 && (
         <p className="text-sm text-gray-500">Nenhum agendamento encontrado</p>
       )}
 
-      {data.map((booking) => (
-        <div
-          key={booking.id}
-          className="flex items-center justify-between border-b py-3 text-sm"
-        >
-          <div>
-            <p className="font-medium">{booking.user.name ?? "Cliente"}</p>
-            <p className="text-gray-500">{booking.service.name}</p>
-          </div>
+      <div className="space-y-4">
+        {data.map((booking) => (
+          <div
+            key={booking.id}
+            className="rounded-2xl bg-zinc-900 p-4 text-sm shadow transition hover:bg-zinc-800"
+          >
+            {/* TOPO */}
+            <div className="flex items-center justify-between">
+              <p className="font-medium text-white">{booking.service.name}</p>
 
-          <div className="flex items-center gap-3">
-            <div className="text-right">
-              <p className="font-semibold">
-                R$ {Number(booking.service.price)}
-              </p>
-              <p className="text-xs text-gray-500">
+              {isMonth ? (
+                <span className="rounded-full bg-gray-500/20 px-3 py-1 text-xs font-semibold text-gray-300">
+                  Finalizado
+                </span>
+              ) : (
+                <span className="rounded-full bg-green-500/20 px-3 py-1 text-xs font-semibold text-green-400">
+                  Pendente
+                </span>
+              )}
+            </div>
+
+            {/* INFO */}
+            <div className="mt-3 space-y-1 text-zinc-400">
+              <p>{booking.user.name ?? "Cliente"}</p>
+              <p className="text-xs">
                 {formatDate(booking.date)} • {formatTime(booking.date)}
               </p>
             </div>
 
-            {/* ❌ CANCELAR INDIVIDUAL */}
-            <Button
-              size="icon"
-              variant="ghost"
-              className="text-red-500 hover:bg-red-500/10"
-              onClick={async () => {
-                const ok = confirm(
-                  `Cancelar o agendamento de ${booking.user.name ?? "Cliente"}?`,
-                )
-                if (!ok) return
+            {/* STATUS SECUNDÁRIO */}
+            {!isMonth && (
+              <div className="mt-3 inline-block rounded-md bg-yellow-500/20 px-2 py-1 text-xs font-medium text-yellow-400">
+                Em breve
+              </div>
+            )}
 
-                await deleteBooking(booking.id)
-              }}
-            >
-              ❌
-            </Button>
+            {/* AÇÕES */}
+            <div className="mt-4 flex items-center justify-between border-t border-zinc-800 pt-3">
+              <p className="font-semibold text-white">
+                R$ {Number(booking.service.price)}
+              </p>
+
+              {!isMonth && (
+                <button
+                  className="text-sm text-red-400 hover:underline"
+                  onClick={async () => {
+                    const ok = confirm(
+                      `Cancelar o agendamento de ${
+                        booking.user.name ?? "Cliente"
+                      }?`,
+                    )
+                    if (!ok) return
+                    await deleteBooking(booking.id)
+                  }}
+                >
+                  ❌ Cancelar
+                </button>
+              )}
+            </div>
           </div>
-        </div>
-      ))}
-
-      <div className="mt-6 rounded-lg border border-red-500/30 p-4">
-        <Button
-          variant="destructive"
-          className="w-full"
-          onClick={() => setOpenCancelActions(!openCancelActions)}
-        >
-          Cancelar agendamentos
-        </Button>
-
-        {openCancelActions && (
-          <div className="mt-4 space-y-2">
-            <Button
-              variant="outline"
-              className="w-full border-red-500 text-red-500"
-              onClick={async () => {
-                if (confirm("Cancelar agendamentos de HOJE?")) {
-                  await clearTodayBookings()
-                }
-              }}
-            >
-              Cancelar agendamentos de hoje
-            </Button>
-
-            <Button
-              variant="outline"
-              className="w-full border-red-500 text-red-500"
-              onClick={async () => {
-                if (confirm("Cancelar agendamentos FUTUROS?")) {
-                  await clearUpcomingBookings()
-                }
-              }}
-            >
-              Cancelar agendamentos próximos
-            </Button>
-
-            <Button
-              variant="outline"
-              className="w-full border-red-500 text-red-500"
-              onClick={async () => {
-                if (confirm("Cancelar TODOS os agendamentos do MÊS?")) {
-                  await clearMonthBookings()
-                }
-              }}
-            >
-              Cancelar agendamentos do mês
-            </Button>
-          </div>
-        )}
+        ))}
       </div>
     </div>
+  )
+}
+
+/* BOTÃO DE ABA */
+function TabButton({
+  label,
+  active,
+  count,
+  onClick,
+  variant = "default",
+}: {
+  label: string
+  active: boolean
+  count?: number
+  onClick: () => void
+  variant?: "default" | "finished"
+}) {
+  const base = "relative w-full rounded-lg px-3 py-2 text-sm transition"
+
+  const styles = active
+    ? "bg-black text-white"
+    : "border border-zinc-700 bg-zinc-800 text-zinc-300"
+
+  const badgeColor =
+    variant === "finished"
+      ? "bg-gray-400 text-black"
+      : "bg-green-500 text-white"
+
+  return (
+    <Button onClick={onClick} className={`${base} ${styles}`}>
+      {label}
+
+      {count !== undefined && count > 0 && (
+        <span
+          className={`absolute -right-2 -top-2 flex h-[20px] min-w-[20px] items-center justify-center rounded-full px-1 text-xs font-bold ${badgeColor}`}
+        >
+          {count}
+        </span>
+      )}
+    </Button>
   )
 }
