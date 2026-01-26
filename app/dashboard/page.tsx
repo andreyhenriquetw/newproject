@@ -29,7 +29,7 @@ export default async function DashboardPage() {
         </Link>
       </Button>
       <div className="pt-5">
-        <h1 className="text-xl font-bold">Dashboard da Barbearia</h1>
+        <h1 className="text-xl font-bold">Dashboard</h1>
       </div>
 
       <BookingTabs
