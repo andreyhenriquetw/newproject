@@ -38,12 +38,25 @@ export default function BookingTabs({
   totalRevenue: number
   totalBookings: number
 }) {
+  const todayDate = new Date()
+  todayDate.setHours(0, 0, 0, 0)
+
+  const filteredUpcoming = upcoming.filter((b) => {
+    const d = new Date(b.date)
+    d.setHours(0, 0, 0, 0)
+    return d.getTime() > todayDate.getTime()
+  })
+
   const [activeTab, setActiveTab] = useState<"today" | "upcoming" | "recent">(
     "today",
   )
 
   const data =
-    activeTab === "today" ? today : activeTab === "upcoming" ? upcoming : recent
+    activeTab === "today"
+      ? today
+      : activeTab === "upcoming"
+        ? filteredUpcoming
+        : recent
 
   const isMonth = activeTab === "recent"
 
@@ -134,14 +147,25 @@ export default function BookingTabs({
                 R$ {Number(booking.service.price)}
               </p>
 
-              {!isMonth && (
+              {isMonth ? (
                 <button
                   className="text-sm text-red-400 hover:underline"
                   onClick={async () => {
                     const ok = confirm(
-                      `Cancelar o agendamento de ${
-                        booking.user.name ?? "Cliente"
-                      }?`,
+                      `Remover o agendamento de ${booking.user.name ?? "Cliente"}?`,
+                    )
+                    if (!ok) return
+                    await deleteBooking(booking.id)
+                  }}
+                >
+                  🗑 Remover
+                </button>
+              ) : (
+                <button
+                  className="text-sm text-red-400 hover:underline"
+                  onClick={async () => {
+                    const ok = confirm(
+                      `Cancelar o agendamento de ${booking.user.name ?? "Cliente"}?`,
                     )
                     if (!ok) return
                     await deleteBooking(booking.id)

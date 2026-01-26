@@ -13,6 +13,8 @@ import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { getConfirmedBookings } from "./_data/get-confirmed-bookings"
 
+import Gallery from "./_components/Gallery"
+
 const Home = async () => {
   const session = await getServerSession(authOptions)
   const barbershops = await db.barbershop.findMany({})
@@ -90,6 +92,11 @@ const Home = async () => {
             <BarbershopItem key={barbershop.id} barbershop={barbershop} />
           ))}
         </div>
+        <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
+          Galeria
+        </h2>
+
+        <Gallery />
       </div>
     </div>
   )

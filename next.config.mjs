@@ -6,7 +6,7 @@ const nextConfig = {
         hostname: "utfs.io",
       },
       {
-        hostname: "cultura.uol.com.br",
+        hostname: "xd90tgazad.ufs.sh",
         protocol: "https",
       },
       {
