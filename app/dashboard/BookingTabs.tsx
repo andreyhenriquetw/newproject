@@ -38,14 +38,39 @@ export default function BookingTabs({
   totalRevenue: number
   totalBookings: number
 }) {
-  const todayDate = new Date()
-  todayDate.setHours(0, 0, 0, 0)
+  const now = new Date()
+  now.setSeconds(0, 0)
 
+  // HOJE (somente horários futuros do mesmo dia)
+  const filteredToday = today.filter((b) => {
+    const d = new Date(b.date)
+    return (
+      d.getFullYear() === now.getFullYear() &&
+      d.getMonth() === now.getMonth() &&
+      d.getDate() === now.getDate() &&
+      d.getTime() >= now.getTime()
+    )
+  })
+
+  // PRÓXIMOS (somente dias futuros)
   const filteredUpcoming = upcoming.filter((b) => {
     const d = new Date(b.date)
-    d.setHours(0, 0, 0, 0)
-    return d.getTime() > todayDate.getTime()
+
+    const isSameDay =
+      d.getFullYear() === now.getFullYear() &&
+      d.getMonth() === now.getMonth() &&
+      d.getDate() === now.getDate()
+
+    // só entra aqui se for outro dia futuro
+    return !isSameDay && d.getTime() > now.getTime()
   })
+
+  // FINALIZADOS (já passaram)
+  const filteredRecent = [
+    ...recent,
+    ...today.filter((b) => new Date(b.date).getTime() < now.getTime()),
+    ...upcoming.filter((b) => new Date(b.date).getTime() < now.getTime()),
+  ]
 
   const [activeTab, setActiveTab] = useState<"today" | "upcoming" | "recent">(
     "today",
@@ -53,10 +78,10 @@ export default function BookingTabs({
 
   const data =
     activeTab === "today"
-      ? today
+      ? filteredToday
       : activeTab === "upcoming"
         ? filteredUpcoming
-        : recent
+        : filteredRecent
 
   const isMonth = activeTab === "recent"
 
@@ -80,21 +105,21 @@ export default function BookingTabs({
         <TabButton
           label="Hoje"
           active={activeTab === "today"}
-          count={today.length}
+          count={filteredToday.length}
           onClick={() => setActiveTab("today")}
         />
 
         <TabButton
           label="Próximos"
           active={activeTab === "upcoming"}
-          count={upcoming.length}
+          count={filteredUpcoming.length}
           onClick={() => setActiveTab("upcoming")}
         />
 
         <TabButton
           label="Finalizados"
           active={activeTab === "recent"}
-          count={recent.length}
+          count={filteredRecent.length}
           variant="finished"
           onClick={() => setActiveTab("recent")}
         />
@@ -109,7 +134,7 @@ export default function BookingTabs({
         {data.map((booking) => (
           <div
             key={booking.id}
-            className="rounded-2xl bg-zinc-900 p-4 text-sm shadow transition hover:bg-zinc-800"
+            className="rounded-2xl bg-zinc-800 p-4 text-sm shadow transition hover:bg-zinc-800"
           >
             {/* TOPO */}
             <div className="flex items-center justify-between">
@@ -127,7 +152,7 @@ export default function BookingTabs({
             </div>
 
             {/* INFO */}
-            <div className="mt-3 space-y-1 text-zinc-400">
+            <div className="mt-3 space-y-1 text-zinc-300">
               <p>{booking.user.name ?? "Cliente"}</p>
               <p className="text-xs">
                 {formatDate(booking.date)} • {formatTime(booking.date)}
@@ -142,7 +167,7 @@ export default function BookingTabs({
             )}
 
             {/* AÇÕES */}
-            <div className="mt-4 flex items-center justify-between border-t border-zinc-800 pt-3">
+            <div className="mt-4 flex items-center justify-between border-t border-gray-700 pt-3">
               <p className="font-semibold text-white">
                 R$ {Number(booking.service.price)}
               </p>
