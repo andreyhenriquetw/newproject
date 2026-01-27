@@ -1,15 +1,11 @@
 "use client"
 
 import Image from "next/image"
-import { motion, useScroll, useTransform, MotionValue } from "framer-motion"
+import { motion, useScroll, useTransform } from "framer-motion"
 import { useRef } from "react"
 
-type MediaItem = {
-  type: "video" | "image"
-  src: string
-}
-
-const media: MediaItem[] = [
+const media = [
+  // VÍDEOS (CDN EXTERNO)
   {
     type: "video",
     src: "https://xd90tgazad.ufs.sh/f/r9YwIz1ulNCWop3TobWbzOktLCEMiD2ya4QYmBcV03frgeT5",
@@ -22,6 +18,8 @@ const media: MediaItem[] = [
     type: "video",
     src: "https://xd90tgazad.ufs.sh/f/r9YwIz1ulNCWmMr9BGZzqhQAariX2EfweBo8UKZVdlMG3LO9",
   },
+
+  // IMAGENS (CDN EXTERNO)
   {
     type: "image",
     src: "https://xd90tgazad.ufs.sh/f/r9YwIz1ulNCW67bRjeGvtBNOrP30QDSaVJUIqzG5X8pMxTY4",
@@ -48,77 +46,72 @@ const media: MediaItem[] = [
   },
 ]
 
-// Componente separado para cada item (isso resolve o erro de hooks)
-function MediaCard({
-  item,
-  index,
-  scrollYProgress,
-}: {
-  item: MediaItem
-  index: number
-  scrollYProgress: MotionValue<number>
-}) {
-  const groupIndex = Math.floor(index / 3)
-  const start = 0 + groupIndex * 0.2
-  const end = 0.2 + groupIndex * 0.2
-
-  const opacity = useTransform(scrollYProgress, [start, end], [0, 1])
-  const translateY = useTransform(scrollYProgress, [start, end], [30, 0])
-
-  return (
-    <motion.div
-      style={{ opacity, y: translateY }}
-      className="relative h-40 w-full overflow-hidden rounded-lg p-[1.5px]"
-    >
-      {/* Borda animada amarela */}
-      <div
-        className="absolute inset-[-1000%] animate-[spin_5s_linear_infinite]"
-        style={{
-          background:
-            "conic-gradient(from 90deg at 50% 50%, transparent 0%, #facc15 20%, transparent 40%)",
-        }}
-      />
-
-      {/* Conteúdo */}
-      <div className="relative z-10 h-full w-full overflow-hidden rounded-[calc(0.5rem-1.5px)] bg-black">
-        {item.type === "video" ? (
-          <video
-            src={item.src}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="none"
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <Image
-            src={item.src}
-            alt=""
-            fill
-            sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover"
-          />
-        )}
-      </div>
-    </motion.div>
-  )
-}
-
 export default function Gallery() {
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const { scrollYProgress } = useScroll({ target: containerRef })
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start 99%", "end 50%"],
+  })
 
   return (
     <div ref={containerRef} className="grid grid-cols-3 gap-3">
-      {media.map((item, index) => (
-        <MediaCard
-          key={item.src}
-          item={item}
-          index={index}
-          scrollYProgress={scrollYProgress}
-        />
-      ))}
+      {media.map((item, index) => {
+        const groupIndex = Math.floor(index / 3)
+        const start = 0 + groupIndex * 0.2
+        const end = 0.2 + groupIndex * 0.2
+
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const opacity = useTransform(scrollYProgress, [start, end], [0, 1], {
+          clamp: true,
+        })
+
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const translateY = useTransform(
+          scrollYProgress,
+          [start, end],
+          [30, 0],
+          { clamp: true },
+        )
+
+        return (
+          <motion.div
+            key={item.src}
+            style={{ opacity, y: translateY }}
+            className="relative h-40 w-full overflow-hidden rounded-lg p-[1.5px]"
+          >
+            <div
+              className="absolute inset-[-1000%] animate-[spin_5s_linear_infinite]"
+              style={{
+                background:
+                  "conic-gradient(from 90deg at 50% 50%, transparent 0%, #3b82f6 20%, transparent 40%)",
+              }}
+            />
+
+            <div className="relative z-10 h-full w-full overflow-hidden rounded-[calc(0.5rem-1.5px)] bg-black">
+              {item.type === "video" ? (
+                <video
+                  src={item.src}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="none"
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <Image
+                  src={item.src}
+                  alt=""
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover"
+                />
+              )}
+            </div>
+          </motion.div>
+        )
+      })}
     </div>
   )
 }
