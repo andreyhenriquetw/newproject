@@ -66,9 +66,9 @@ export default function BookingTabs({
   })
 
   // FINALIZADOS (já passaram)
+  // FINALIZADOS (somente agendamentos passados, sem repetir hoje/upcoming)
   const filteredRecent = [
-    ...recent,
-    ...today.filter((b) => new Date(b.date).getTime() < now.getTime()),
+    ...recent.filter((b) => new Date(b.date).getTime() < now.getTime()),
   ]
 
   const [activeTab, setActiveTab] = useState<"today" | "upcoming" | "recent">(
