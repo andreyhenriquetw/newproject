@@ -69,7 +69,6 @@ export default function BookingTabs({
   const filteredRecent = [
     ...recent,
     ...today.filter((b) => new Date(b.date).getTime() < now.getTime()),
-    ...upcoming.filter((b) => new Date(b.date).getTime() < now.getTime()),
   ]
 
   const [activeTab, setActiveTab] = useState<"today" | "upcoming" | "recent">(
