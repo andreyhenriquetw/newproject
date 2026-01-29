@@ -84,7 +84,7 @@ export default function Gallery() {
               className="absolute inset-[-1000%] animate-[spin_5s_linear_infinite]"
               style={{
                 background:
-                  "conic-gradient(from 90deg at 50% 50%, transparent 0%, #3b82f6 20%, transparent 40%)",
+                  "conic-gradient(from 90deg at 50% 50%, transparent 0%, #EAB308 20%, transparent 40%)",
               }}
             />
 

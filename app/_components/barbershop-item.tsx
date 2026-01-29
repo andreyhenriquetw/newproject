@@ -69,7 +69,7 @@ const BarbershopItem = ({ barbershop }: BarberShopItemProps) => {
           >
             {isLoading ? (
               <div className="z-10 flex h-full w-full items-center justify-center gap-2 bg-secondary py-2">
-                <Loader2 className="h-4 w-4 animate-spin text-[#3b82f6]" />
+                <Loader2 className="h-4 w-4 animate-spin text-[#EAB308]" />
                 <span className="text-sm font-semibold uppercase"></span>
               </div>
             ) : (
@@ -81,7 +81,7 @@ const BarbershopItem = ({ barbershop }: BarberShopItemProps) => {
                   className="absolute inset-[-1000%] animate-[spin_6s_linear_infinite]"
                   style={{
                     background:
-                      "conic-gradient(from 90deg at 50% 50%, transparent 0%, #3b82f6 20%, transparent 40%)",
+                      "conic-gradient(from 90deg at 50% 50%, transparent 0%, #EAB308 20%, transparent 40%)",
                   }}
                 />
 
